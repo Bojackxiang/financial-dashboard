@@ -6,7 +6,7 @@ import NavItem from "./NavItem";
 
 const NAV_ROUTES = [
   {
-    href: "/",
+    href: "/dash",
     label: "Overview",
   },
   {
