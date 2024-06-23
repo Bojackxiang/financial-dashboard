@@ -1,4 +1,8 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import React from "react";
+import NavItem from "./NavItem";
 
 const NAV_ROUTES = [
   {
@@ -24,10 +28,18 @@ const NAV_ROUTES = [
 ];
 
 const Navigation = () => {
+  const pathname = usePathname();
   return (
     <div className="hidden lg:flex items-center gap-x-2 overflow-x-auto">
       {NAV_ROUTES.map((navItem) => {
-        return <p>{navItem.label}</p>;
+        return (
+          <NavItem
+            key={navItem.href}
+            label={navItem.label}
+            href={navItem.href}
+            isActive={pathname === navItem.href}
+          />
+        );
       })}
     </div>
   );
