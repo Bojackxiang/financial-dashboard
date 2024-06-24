@@ -4,7 +4,14 @@ import React, { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useMedia } from "react-use";
 import { Menu } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetHeader,
+  SheetDescription,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import NavItem from "./NavItem";
 import { cn } from "@/lib/utils";
@@ -34,7 +41,6 @@ const NAV_ROUTES = [
 
 const Navigation = () => {
   const pathname = usePathname();
-  console.log("pathname: ", pathname);
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useMedia("(max-width: 1024px)", false);
@@ -63,7 +69,7 @@ const Navigation = () => {
   const MobileMenuComponent = (
     <>
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetTrigger>
+        <SheetTrigger asChild>
           <Button
             variant="outline"
             size="sm"
@@ -73,13 +79,18 @@ const Navigation = () => {
             <Menu className="size-4" />
           </Button>
         </SheetTrigger>
+
         <SheetContent side="left" className="px-2">
+          <SheetHeader>
+            <SheetTitle className="p-4">Menu</SheetTitle>
+            <SheetDescription />
+          </SheetHeader>
           <nav className="flex flex-col gap-y-2 pt-6">
             {NAV_ROUTES.map((navItem) => {
               return (
                 <Button
                   className={cn(
-                    "w-full justify-start no-underline",
+                    "w-full justify-start no-underline hover:no-underline",
                     navItem.href === pathname
                       ? "bg-slate-200"
                       : "text-slate-500"
