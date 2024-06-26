@@ -1,7 +1,7 @@
 import { UserButton } from "@clerk/nextjs";
 import React from "react";
 
-export default function Dashboard() {
+export default async function Dashboard() {
   return (
     <div>
       <UserButton />
