@@ -1,0 +1,15 @@
+{
+	"Auth Check": {
+	  "prefix": "auth-check",
+	  "body": [
+		"// -- AUTH CHECK --",
+		"const auth = getAuth(c);",
+		"if (!auth?.userId) {",
+		"  throw new HTTPException(401, {",
+		"    message: \"Invalid User Id\",",
+		"  });",
+		"}"
+	  ],
+	  "description": "Check user authentication and throw HTTP exception if invalid"
+	}
+  }
