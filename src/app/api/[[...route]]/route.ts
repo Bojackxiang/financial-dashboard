@@ -7,11 +7,23 @@ import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
 // routes
 import account from "./account";
+import { HTTPException } from "hono/http-exception";
 
 // export const runtime = "edge";
 
 const app = new Hono().basePath("/api");
 // app.use("*", clerkMiddleware());
+
+// global error handler
+app.onError((err, c) => {
+  if (err instanceof HTTPException) {
+    return err.getResponse();
+  }
+
+  return c.json({
+    error: err.message,
+  });
+});
 
 const routes = app.route("/account", account);
 
