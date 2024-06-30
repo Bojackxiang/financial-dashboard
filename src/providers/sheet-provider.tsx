@@ -1,9 +1,8 @@
 "use client";
 
 import React from "react";
-import { NewAccountSheet } from "@/components/newAccountSheet";
 import { useMountedState } from "react-use";
-useMountedState;
+import { NewAccountSheet } from "@/components/NewAccountSheet";
 
 type Props = {
   children: React.ReactNode;
