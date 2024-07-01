@@ -10,6 +10,7 @@ import {
   SheetTitle,
 } from "./ui/sheet";
 import { useNewAccount } from "@/hooks/accounts/use-new-account";
+import { useCreateAccount } from "@/hooks/accounts/api/use-create-account";
 
 // update account schema for the form
 const formSchema = accountSchema.omit({ userId: true });
@@ -17,9 +18,17 @@ type FormValues = z.input<typeof formSchema>;
 
 export const NewAccountSheet = () => {
   const { isOpen, onClose } = useNewAccount();
+  const mutation = useCreateAccount();
 
   const onNewAccount = (values: FormValues) => {
     console.log(values);
+    // @ts-ignore
+    mutation.mutate(values, {
+      onSuccess: () => {
+        // TODO: close the modal
+        onClose();
+      },
+    });
   };
 
   return (

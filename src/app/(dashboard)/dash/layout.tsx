@@ -11,7 +11,7 @@ const DashboardLayout = (props: Props) => {
     <>
       <Header />
       <main className="px-3 lg:px-14">
-        <section>{children}</section>
+        <div>{children}</div>
       </main>
     </>
   );

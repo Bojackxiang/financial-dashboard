@@ -7,7 +7,7 @@ export default function Page() {
   return (
     <main className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
       {/* left: first column */}
-      <section className="h-full flex flex-col items-center justify-center px-4">
+      <div className="h-full flex flex-col items-center justify-center px-4">
         <div>
           <div className="text-center">
             <h1 className="font-bold text-3xl">Welcome back</h1>
@@ -24,7 +24,7 @@ export default function Page() {
             </ClerkLoading>
           </div>
         </div>
-      </section>
+      </div>
       {/* right: second column on desktop*/}
       <AuthBanner />
     </main>

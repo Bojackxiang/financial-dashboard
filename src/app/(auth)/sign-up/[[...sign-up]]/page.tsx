@@ -9,7 +9,7 @@ function SignUpPage() {
       <AuthBanner />
 
       {/* right: second column on desktop*/}
-      <section className="h-full flex flex-col items-center justify-center px-4">
+      <div className="h-full flex flex-col items-center justify-center px-4">
         <div>
           <div className="text-center">
             <h1 className="font-bold text-3xl">Welcome back</h1>
@@ -26,7 +26,7 @@ function SignUpPage() {
             </ClerkLoading>
           </div>
         </div>
-      </section>
+      </div>
     </main>
   );
 }

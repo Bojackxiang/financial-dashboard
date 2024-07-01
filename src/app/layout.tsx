@@ -5,6 +5,7 @@ import { QueryProvider } from "@/providers/query-provider";
 
 import "./globals.css";
 import { SheetProvider } from "@/providers/sheet-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,14 +20,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <SheetProvider>
+    <QueryProvider>
       <ClerkProvider>
-        <html lang="en">
-          <QueryProvider>
+        <SheetProvider>
+          <html lang="en">
+            <Toaster richColors theme="light" />
             <body className={inter.className}>{children}</body>
-          </QueryProvider>
-        </html>
+          </html>
+        </SheetProvider>
       </ClerkProvider>
-    </SheetProvider>
+    </QueryProvider>
   );
 }

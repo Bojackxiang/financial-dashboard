@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { client } from "@/lib/hono";
 import { ERROR_MESSAGE as UI_ERROR_MESSAGE } from "@/constants/UI_ERROR_MESSAGE";
+import { ACCOUNTS_QUERY_KEY } from "@/constants/UI_QUERY_KEY";
 
 export const useGetAccounts = () => {
   const query = useQuery({
-    queryKey: ["accounts"],
+    queryKey: [ACCOUNTS_QUERY_KEY],
     queryFn: async () => {
       const response = await client.api.account.$get();
 

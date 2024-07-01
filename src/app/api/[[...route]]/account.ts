@@ -32,26 +32,35 @@ const app = new Hono()
   })
   // CREATE ACCOUNT
   .post("/", zValidator("json", accountSchema), async (c) => {
-    // -- AUTH CHECK --
-    // const auth = getAuth(c);
-    // if (!auth?.userId) {
-    //   throw new HTTPException(401, {
-    //     message: "Invalid User Id",
-    //   });
-    // }
+    try {
+      // -- AUTH CHECK --
+      // const auth = getAuth(c);
+      // if (!auth?.userId) {
+      //   throw new HTTPException(401, {
+      //     message: "Invalid User Id",
+      //   });
+      // }
 
-    // -- CREATE ACCOUNT --
-    const { name, plaidId, userId } = c.req.valid("json");
-    const createdAccount = await prismadb.account.create({
-      data: {
-        id: uuidv4(),
-        name,
-        plaidId,
-        userId,
-      },
-    });
-
-    return formatResponse(c, omit(createdAccount, ["id", "userId"]), 1);
+      // -- CREATE ACCOUNT --
+      const { name, plaidId, userId } = c.req.valid("json");
+      const createdAccount = await prismadb.account.create({
+        data: {
+          id: uuidv4(),
+          name,
+          plaidId,
+          userId,
+        },
+      });
+      return formatResponse(c, omit(createdAccount, ["id", "userId"]), 1);
+    } catch (error: any) {
+      return formatResponse(
+        c,
+        null,
+        -1,
+        "Api Create Account Error",
+        error.message
+      );
+    }
   })
   .get("/:id", (c) => c.json(`get ${c.req.param("id")}`));
 
