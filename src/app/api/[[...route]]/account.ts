@@ -21,7 +21,7 @@ const app = new Hono()
     }
 
     // == DB QUERY ==
-    const accounts = await prismadb.account.findFirst({
+    const accounts = await prismadb.account.findMany({
       where: {
         userId: auth.userId,
       },

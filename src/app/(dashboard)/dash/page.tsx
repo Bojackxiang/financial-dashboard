@@ -6,5 +6,5 @@ import React from "react";
 
 export default function Dashboard() {
   const { data, error, isError, isLoading } = useGetAccounts();
-  return <div>{data?.name}</div>;
+  return <div>{data?.length}</div>;
 }

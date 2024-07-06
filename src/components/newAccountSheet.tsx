@@ -21,11 +21,9 @@ export const NewAccountSheet = () => {
   const mutation = useCreateAccount();
 
   const onNewAccount = (values: FormValues) => {
-    console.log(values);
     // @ts-ignore
     mutation.mutate(values, {
       onSuccess: () => {
-        // TODO: close the modal
         onClose();
       },
     });

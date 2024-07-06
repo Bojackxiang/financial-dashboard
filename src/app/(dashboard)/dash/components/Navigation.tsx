@@ -22,19 +22,19 @@ const NAV_ROUTES = [
     label: "Overview",
   },
   {
-    href: "/transactions",
+    href: "/dash/transactions",
     label: "Transaction",
   },
   {
-    href: "/accounts",
+    href: "/dash/accounts",
     label: "Accounts",
   },
   {
-    href: "/category",
+    href: "/dash/category",
     label: "Category",
   },
   {
-    href: "/settings",
+    href: "/dash/settings",
     label: "Settings",
   },
 ];
