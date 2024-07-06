@@ -11,14 +11,29 @@ import { columns } from "./components/column";
 import { DataTable } from "./components/data-table";
 import { useGetAccounts } from "@/hooks/accounts/api/use-get-account";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useDeleteAccount } from "@/hooks/accounts/api/use-delete-account";
 
 const AccountsPage = () => {
   const { onOpen } = useNewAccount();
-  const { data, error, isError, isLoading } = useGetAccounts();
-  const shouldDataTableDisplay = !isLoading && !isError && !isUndefined(data);
-  if (isLoading) {
+  const getAcctQuery = useGetAccounts();
+  const deleteAcctQuery = useDeleteAccount();
+
+  const shouldDataTableDisplay =
+    !getAcctQuery.isLoading &&
+    !getAcctQuery.isError &&
+    !isUndefined(getAcctQuery.data);
+
+  const isDeleteDisabled = getAcctQuery.isLoading || deleteAcctQuery.isPending;
+
+  const onAcctDelete = (ids: string[]) => {
+    if (ids.length == 0) return;
+
+    deleteAcctQuery.mutate({ ids });
+  };
+
+  if (getAcctQuery.isLoading) {
     return (
-      <div className="max-w-screen-2xl mx-auto w-full pb-10 -mt-24 bg-white rounded-sm shadow-2xl">
+      <div className="max-w-screen-2xl mx-auto w-full pb-10 -mt-24 bg-white rounded-sm shadow-md">
         <div className="border-none drop-shadow-sm">
           <CardHeader>
             <Skeleton className="h-8 w-48" />
@@ -44,8 +59,11 @@ const AccountsPage = () => {
         <CardContent>
           {shouldDataTableDisplay && (
             <DataTable
+              // @ts-ignore-next-line
               columns={columns}
-              data={(data as AccountDataType[]) || []}
+              data={(getAcctQuery.data as AccountDataType[]) || []}
+              onAcctDeleted={onAcctDelete}
+              isDelBtnDisable={isDeleteDisabled}
             />
           )}
         </CardContent>

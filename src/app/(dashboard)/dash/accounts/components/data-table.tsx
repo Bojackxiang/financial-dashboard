@@ -20,10 +20,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import useConfirm from "@/hooks/use-confirm";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  isDelBtnDisabled: boolean;
+  onAcctDeleted: (ids: string[]) => void;
 }
 
 type RowDataType = {
@@ -33,7 +36,13 @@ type RowDataType = {
 export function DataTable<TData, TValue>({
   columns,
   data,
+  isDelBtnDisabled,
+  onAcctDeleted,
 }: DataTableProps<TData, TValue>) {
+  const [ConfirmationDialog, confirm] = useConfirm(
+    "Are you sure ?",
+    "You are going to do a bulk delete"
+  );
   const [rowSelection, setRowSelection] = useState({});
   const table = useReactTable({
     data,
@@ -46,24 +55,36 @@ export function DataTable<TData, TValue>({
     },
   });
 
-  // TODO: MOVE THE ON DELETE TO HIGHER ORDER COMPONENT
-  const onDelete = () => {
-    const { rows: selectedRows } = table.getSelectedRowModel();
-    const selectedItemIds = selectedRows.map((item: Row<TData>) => {
-      const rowData = item.original as RowDataType;
-      return rowData.id;
-    });
+  const onDeleteClicked = async () => {
+    if (isDelBtnDisabled == true) return;
+
+    const ok = await confirm();
+
+    if (ok) {
+      const { rows: selectedRows } = table.getSelectedRowModel();
+      const selectedItemIds = selectedRows.map((item: Row<TData>) => {
+        const rowData = item.original as RowDataType;
+        return rowData.id;
+      });
+
+      onAcctDeleted(selectedItemIds);
+
+      table.resetRowSelection();
+    }
   };
 
   return (
     <div>
+      <ConfirmationDialog />
       <div className="flex-1 text-sm text-muted-foreground flex justify-between">
         <div>
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
         <div>
-          <Button onClick={onDelete}>delete</Button>
+          <Button disabled={isDelBtnDisabled} onClick={onDeleteClicked}>
+            delete
+          </Button>
         </div>
       </div>
       <div className="max-w-screen-2xl mx-auto">

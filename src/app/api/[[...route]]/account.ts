@@ -3,9 +3,11 @@ import { clerkMiddleware, getAuth } from "@hono/clerk-auth";
 import { HTTPException } from "hono/http-exception";
 import { v4 as uuidv4 } from "uuid";
 import { omit } from "lodash";
+import { zValidator } from "@hono/zod-validator";
+import { z } from "zod";
+
 import { prismadb } from "@/lib/prisma";
 import { formatResponse } from "@/utils/ApiFormatResponse";
-import { zValidator } from "@hono/zod-validator";
 import { accountSchema } from "@/z-schemas/accountSchema";
 
 const app = new Hono()
@@ -62,6 +64,37 @@ const app = new Hono()
       );
     }
   })
-  .get("/:id", (c) => c.json(`get ${c.req.param("id")}`));
+  .get("/:id", (c) => c.json(`get ${c.req.param("id")}`))
+  .post(
+    "/bulk-delete",
+    clerkMiddleware(),
+    zValidator(
+      "json",
+      z.object({
+        ids: z.array(z.string()),
+      })
+    ),
+    async (c) => {
+      // -- AUTH CHECK --
+      const auth = getAuth(c);
+      if (!auth?.userId) {
+        throw new HTTPException(401, {
+          message: "Invalid User Id",
+        });
+      }
+
+      const values = c.req.valid("json");
+
+      await prismadb.account.deleteMany({
+        where: {
+          id: {
+            in: values.ids,
+          },
+        },
+      });
+
+      return formatResponse(c, {});
+    }
+  );
 
 export default app;
