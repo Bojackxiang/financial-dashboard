@@ -39,10 +39,11 @@ export const EditAccountSheet = () => {
           <SheetDescription>Edit account</SheetDescription>
         </SheetHeader>
         <AccountForm
+          id={id}
           onDelete={() => {}}
           onSubmit={onNewAccount}
           defaultValues={{
-            name: "sample name",
+            name: mutation.data?.name ?? "sample name",
             plaidId: "123456",
           }}
           disabled={false}
