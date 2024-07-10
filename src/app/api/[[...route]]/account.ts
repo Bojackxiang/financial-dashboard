@@ -32,6 +32,38 @@ const app = new Hono()
     // == SUCCESS ==
     return formatResponse(c, accounts, 1);
   })
+  // GET SINGLE ACCOUNT
+  .get(
+    "/:id",
+    clerkMiddleware(),
+    zValidator(
+      "param",
+      z.object({
+        id: z.string().optional(),
+      })
+    ),
+    async (c) => {
+      const auth = getAuth(c);
+
+      if (!auth?.userId) {
+        throw new HTTPException(401, {
+          message: "Invalid User Id",
+        });
+      }
+
+      const { id } = c.req.valid("param");
+      const { userId } = auth;
+
+      const account = await prismadb.account.findFirst({
+        where: {
+          id,
+          userId,
+        },
+      });
+
+      return formatResponse(c, account, 1);
+    }
+  )
   // CREATE ACCOUNT
   .post("/", zValidator("json", accountSchema), async (c) => {
     try {

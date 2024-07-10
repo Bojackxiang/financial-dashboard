@@ -3,6 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { AccountDataType } from "@/types/accountDataType";
+import Actions from "./actions";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
@@ -42,5 +43,14 @@ export const columns: ColumnDef<AccountDataType>[] = [
     cell: ({ row }) => (
       <div className="font-medium">{row.getValue("plaidId") as string}</div>
     ),
+  },
+  {
+    accessorKey: "id",
+    header: () => <div className="font-bold">Actions</div>,
+    cell: ({ row }) => <Actions id={row.getValue("id")} />,
+    // cell: ({ row }) => {
+    //   console.log(row.getValue("id"));
+    //   return <div>{row.getValue("id")}</div>;
+    // },
   },
 ];
